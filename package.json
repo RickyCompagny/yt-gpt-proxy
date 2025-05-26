@@ -1,9 +1,8 @@
 {
   "name": "yt-gpt-proxy",
   "version": "1.0.0",
-  "main": "index.js",
-  "type": "commonjs",
+  "type": "module",
   "dependencies": {
-    "node-fetch": "^2.6.7"
+    "node-fetch": "^2.6.1"
   }
 }
