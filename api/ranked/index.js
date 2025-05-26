@@ -13,20 +13,14 @@ export default async function handler(req, res) {
     const searchRes = await fetch(searchUrl);
     const searchData = await searchRes.json();
 
-    const videoIds = searchData.items
-      .map(item => item.id.videoId)
-      .filter(Boolean)
-      .join(',');
-
-    if (!videoIds) {
-      return res.status(200).json({ results: [] });
-    }
+    const videoIds = searchData.items.map(item => item.id.videoId).join(',');
 
     const statsUrl = `https://www.googleapis.com/youtube/v3/videos?part=statistics,snippet&id=${videoIds}&key=${apiKey}`;
     const statsRes = await fetch(statsUrl);
     const statsData = await statsRes.json();
 
     const now = Date.now();
+
     const results = statsData.items.map(video => {
       const publishedAt = new Date(video.snippet.publishedAt).getTime();
       const hours = (now - publishedAt) / (1000 * 60 * 60);
@@ -37,13 +31,13 @@ export default async function handler(req, res) {
         title: video.snippet.title,
         videoId: video.id,
         views,
-        vph,
+        vph
       };
     });
 
     res.status(200).json({ results });
-  } catch (error) {
-    console.error('API error:', error);
-    res.status(500).json({ error: 'Internal server error', details: error.message });
+  } catch (err) {
+    console.error('SERVER ERROR →', err);
+    res.status(500).json({ error: 'Internal server error' });
   }
 }
