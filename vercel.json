@@ -1,9 +1,15 @@
 {
   "version": 2,
-  "functions": {
-    "api/ranked/index.js": {
-      "memory": 512,
-      "maxDuration": 10
+  "builds": [
+    {
+      "src": "api/ranked/index.js",
+      "use": "@vercel/node"
     }
-  }
+  ],
+  "routes": [
+    {
+      "src": "/api/ranked",
+      "dest": "api/ranked/index.js"
+    }
+  ]
 }
